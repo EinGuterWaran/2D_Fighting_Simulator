@@ -98,7 +98,7 @@ def simulate_game(map,fighters):
       # pygame.display.flip()
   
       # --- Limit to 60 frames per second
-      clock.tick(60)
+      clock.tick(5)
   
 map = map(3,5)
 otto = Fighter("Otto", 93, 93, 93, 1)
