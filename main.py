@@ -5,7 +5,9 @@ class map:
   def __init__(self, x, y): 
         self.x = x 
         self.y = y 
-        self.map = [[0 for a in range(y)] for b in range(x)] 
+        self.map = [[0 for a in range(y)] for b in range(x)]
+  def update(self,x,y,val):
+    self.map[x][y] = val
 
 class Fighter:
   def __init__(self, name, strength, life, crit,id): 
@@ -17,20 +19,33 @@ class Fighter:
         self.id = id
         self.x = None
         self.y = None
+  def delete(self,map):
+      map.update(self.x,self.y,0)
+  def update(self,map):
+      map.update(self.x,self.y,self.id)
+
   def heal(self):
         self.temp = self.life
   def left(self, map):
-    if not self.x - 1 < 0:
+    if not self.x - 1 < 0 and map.map[self.x-1][self.y] == 0:
+      self.delete(map)
       self.x -= 1
+      self.update(map)
   def right(self, map):
-     if not self.x + 1 == map.x:
+     if not self.x + 1 == map.x and map.map[self.x+1][self.y] == 0:
+      self.delete(map)
       self.x += 1
+      self.update(map)
   def up(self, map):
-    if not self.y - 1 < 0:
+    if not self.y - 1 < 0 and map.map[self.x][self.y-1] == 0:
+      self.delete(map)
       self.y -= 1
+      self.update(map)
   def down(self, map):
-     if not self.y + 1 == map.y:
+     if not self.y + 1 == map.y and map.map[self.x][self.y+1] == 0:
+      self.delete(map)
       self.y += 1
+      self.update(map)
 
 def simulate_game(map,fighters):
   for fighter in fighters:
@@ -45,9 +60,9 @@ def simulate_game(map,fighters):
   # Define some colors
   BLACK    = (   0,   0,   0)
   WHITE    = ( 255, 255, 255)
-  GREEN    = (   0, 255,   0)
-  RED      = ( 255,   0,   0)
-  BLUE     = (   0,   0, 255)
+  # GREEN    = (   0, 255,   0)
+  # RED      = ( 255,   0,   0)
+  # BLUE     = (   0,   0, 255)
   pygame.init()
   size = (700, 500)
   screen = pygame.display.set_mode(size)  
@@ -74,15 +89,6 @@ def simulate_game(map,fighters):
           fighter.right(map)
         elif where == 4:
           fighter.left(map)
-      for x in range(0,len(map.map)):
-        for y in range(0,len(map.map[x])):
-          if map.map[x][y] != 0:
-            who = map.map[x][y]
-            for fighter in fighters:
-              if fighter.id == who:
-                if (fighter.x != x) or (fighter.y != y):
-                  map.map[x][y] = 0
-                  map.map[fighter.x][fighter.y] = fighter.id
       # --- Drawing code should go here
       for x in range(0,len(map.map)):
         for y in range(0,len(map.map[x])):
