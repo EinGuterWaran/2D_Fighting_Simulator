@@ -1,7 +1,7 @@
 import random
 import pygame
 
-class map:
+class Map:
   def __init__(self, x, y): 
         self.x = x 
         self.y = y 
@@ -23,7 +23,6 @@ class Fighter:
       map.update(self.x,self.y,0)
   def update(self,map):
       map.update(self.x,self.y,self.id)
-
   def heal(self):
         self.temp = self.life
   def left(self, map):
@@ -93,21 +92,23 @@ def simulate_game(map,fighters):
       for x in range(0,len(map.map)):
         for y in range(0,len(map.map[x])):
           font = pygame.font.SysFont('Calibri', 25, True, False)
-          text = font.render(str(map.map[x][y]),True,BLACK)
-          screen.blit(text, [x*40, y*40])
+          if map.map[x][y] != 0:
+            text = font.render(str(map.map[x][y]),True,BLACK)
+            screen.blit(text, [x*40, y*40])          
       pygame.display.update()
-      
       # First, clear the screen to white. Don't put other drawing commands
       # above this, or they will be erased with this command.
       screen.fill(WHITE)
-      # --- Go ahead and update the screen with what we've drawn.
-      # pygame.display.flip()
-  
+      # --- Go ahead and update the screen with what we've drawn.  
       # --- Limit to 60 frames per second
       clock.tick(5)
-  
-map = map(3,5)
-otto = Fighter("Otto", 93, 93, 93, 1)
-hans = Fighter("Hans", 94, 94, 94, 2)
-simulate_game(map,[otto,hans])
-print(map.map)
+
+def main():
+  map = Map(5,5)
+  otto = Fighter("Otto", 93, 93, 93, "O")
+  hans = Fighter("Hans", 94, 94, 94, "H")
+  simulate_game(map,[otto,hans])
+  print(map.map)
+
+if __name__ == "__main__":
+  main()
