@@ -97,18 +97,22 @@ def simulate_game(map,fighters):
       for event in pygame.event.get(): # User did something
           if event.type == pygame.QUIT: # If user clicked close
               done = True # Flag that we are done so we exit this loop
-  
+
       # --- Game logic should go here
       for fighter in fighters:
-        where = random.randint(1,4)
-        if where == 1:
-          fighter.up(map, fighters)
-        elif where == 2:
-          fighter.down(map, fighters)
-        elif where == 3:
-          fighter.right(map, fighters)
-        elif where == 4:
-          fighter.left(map, fighters)
+        if fighter.temp <= 0:
+          print(fighter.name+" is dead.")
+          done = True
+        else:
+          where = random.randint(1,4)
+          if where == 1:
+            fighter.up(map, fighters)
+          elif where == 2:
+            fighter.down(map, fighters)
+          elif where == 3:
+            fighter.right(map, fighters)
+          elif where == 4:
+            fighter.left(map, fighters)
       # --- Drawing code should go here
       for x in range(0,map.x):
         for y in range(0,map.y):
