@@ -32,7 +32,7 @@ class Fighter:
     def heal(self):
         self.temp = self.life
 
-    def attack(self, fighters, x, y, tp):
+    def attack(self, fighters, x, y, tp, stats):
         for fighter in fighters:
             if fighter.x == x and fighter.y == y:
                 victim = fighter
@@ -45,6 +45,8 @@ class Fighter:
         how_hard = round(critFactor*random.randint(min_power, max_power) / 10, 2)
         victim.temp -= how_hard
         victim.temp = round(victim.temp, 2)
+        stats[self.id]["damage"] += how_hard
+        stats[self.id]["damage"] = round(stats[self.id]["damage"],2)
         if critFactor == 3:
           the_text1 = "KABOOM! A critical hit. "
         else:
@@ -52,41 +54,42 @@ class Fighter:
         the_text2 = ""
         if victim.temp <=0:
           the_text2 = "and KILLS "
+          stats[self.id]["kills"]+=1
         the_text = the_text1 + self.name + " attacks " + the_text2 + victim.name + ". He loses " + str(how_hard) + " life."
         print(the_text)
         tp.append(the_text)
 
-    def left(self, map, fighters, tp):
+    def left(self, map, fighters, tp, stats):
         if not self.x - 1 < 0 and map.map[self.x - 1][self.y] == 0:
             self.delete(map)
             self.x -= 1
             self.put(map)
         elif not self.x - 1 < 0 and not map.map[self.x - 1][self.y] == 0:
-            self.attack(fighters, self.x - 1, self.y, tp)
+            self.attack(fighters, self.x - 1, self.y, tp, stats)
 
-    def right(self, map, fighters, tp):
+    def right(self, map, fighters, tp, stats):
         if not self.x + 1 == map.x and map.map[self.x + 1][self.y] == 0:
             self.delete(map)
             self.x += 1
             self.put(map)
         elif not self.x + 1 == map.x and not map.map[self.x + 1][self.y] == 0:
-            self.attack(fighters, self.x + 1, self.y, tp)
+            self.attack(fighters, self.x + 1, self.y, tp, stats)
 
-    def up(self, map, fighters, tp):
+    def up(self, map, fighters, tp, stats):
         if not self.y - 1 < 0 and map.map[self.x][self.y - 1] == 0:
             self.delete(map)
             self.y -= 1
             self.put(map)
         elif not self.y - 1 < 0 and not map.map[self.x][self.y - 1] == 0:
-            self.attack(fighters, self.x, self.y - 1, tp)
+            self.attack(fighters, self.x, self.y - 1, tp, stats)
 
-    def down(self, map, fighters, tp):
+    def down(self, map, fighters, tp, stats):
         if not self.y + 1 == map.y and map.map[self.x][self.y + 1] == 0:
             self.delete(map)
             self.y += 1
             self.put(map)
         elif not self.y + 1 == map.y and not map.map[self.x][self.y + 1] == 0:
-            self.attack(fighters, self.x, self.y + 1, tp)
+            self.attack(fighters, self.x, self.y + 1, tp, stats)
 
 
 def simulate_game(map, fighters):
@@ -95,7 +98,11 @@ def simulate_game(map, fighters):
     fighters2 = fighters.copy()
     textPipe = []
     textPipeLen = 0
+    stats={}
     for fighter in fighters:
+        stats[fighter.id] = {}
+        stats[fighter.id]["kills"] = 0
+        stats[fighter.id]["damage"] = 0
         while True:
             x = random.randint(0, map.x - 1)
             y = random.randint(0, map.y - 1)
@@ -145,13 +152,13 @@ def simulate_game(map, fighters):
         for fighter in fighters:
             where = random.randint(1, 4)
             if where == 1:
-                fighter.up(map, fighters, textPipe)
+                fighter.up(map, fighters, textPipe, stats)
             elif where == 2:
-                fighter.down(map, fighters, textPipe)
+                fighter.down(map, fighters, textPipe, stats)
             elif where == 3:
-                fighter.right(map, fighters, textPipe)
+                fighter.right(map, fighters, textPipe, stats)
             elif where == 4:
-                fighter.left(map, fighters, textPipe)
+                fighter.left(map, fighters, textPipe, stats)
         # --- Drawing code should go here
         for x in range(0, map.x):
             for y in range(0, map.y):
@@ -177,6 +184,7 @@ def simulate_game(map, fighters):
             text = font.render(the_text, True, GREEN)
             print(the_text)
             textPipe.append(the_text)
+            print(stats)
 
             fighters[0].delete(map)
             fighters.remove(fighters[0])
@@ -209,8 +217,8 @@ def main():
     peter = Fighter("Peter", 95, 35, 95, "P")
     walter = Fighter("Walter", 96, 36, 96, "W")
     gerd = Fighter("Gerd", 97, 37, 97, "G")
+    # janu = Fighter("Janu", 200, 200, 1000, "Janu")
     simulate_game(map, [otto, hans, peter, walter, gerd])
-    print(map.map)
 
 
 if __name__ == "__main__":
