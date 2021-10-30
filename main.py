@@ -13,14 +13,14 @@ class Map:
 
 
 class Fighter:
-    def __init__(self, name, strength, life, speed, crit, id):
+    def __init__(self, name, life, strength, speed, crit, id):
         self.name = name
-        self.strength = strength
         self.life = life
+        self.strength = strength
         self.speed = speed
         self.crit = crit
-        self.temp = life
         self.id = id
+        self.temp = life
         self.x = None
         self.y = None
 
@@ -40,42 +40,44 @@ class Fighter:
         min_power = round(self.strength * 0.7, 0)
         max_power = round(self.strength * 1.3, 0)
         critFactor = 1
-        isCrit = random.randint(1,101)
-        if isCrit <= round(self.crit/10,2):
-          critFactor = 3
-        how_hard = round(critFactor*random.randint(min_power, max_power) / 10, 2)
+        isCrit = random.randint(1, 101)
+        if isCrit <= round(self.crit / 10, 2):
+            critFactor = 3
+        how_hard = round(
+            critFactor * random.randint(min_power, max_power) / 10, 2)
         victim.temp -= how_hard
         victim.temp = round(victim.temp, 2)
         stats[self.id]["damage"] += how_hard
-        stats[self.id]["damage"] = round(stats[self.id]["damage"],2)
+        stats[self.id]["damage"] = round(stats[self.id]["damage"], 2)
         if critFactor == 3:
-          the_text1 = "KABOOM! A critical hit. "
+            the_text1 = "KABOOM! A critical hit. "
         else:
-          the_text1 = "BAM! "
+            the_text1 = "BAM! "
         the_text2 = ""
-        if victim.temp <=0:
-          the_text2 = "and KILLS "
-          stats[self.id]["kills"]+=1
-        the_text = the_text1 + self.name + " attacks " + the_text2 + victim.name + ". He loses " + str(how_hard) + " life."
+        if victim.temp <= 0:
+            the_text2 = "and KILLS "
+            stats[self.id]["kills"] += 1
+        the_text = the_text1 + self.name + " attacks " + the_text2 + victim.name + ". He loses " + str(
+            how_hard) + " life."
         print(the_text)
         tp.append(the_text)
 
     def move(self, map, fighters, tp, stats):
-      moves = 1
-      for a in range(0,2):
-        x = random.randint(1,1001)
-        if self.speed*3 >= x:
-          moves +=1
-      for b in range(0,moves):
-        where = random.randint(1, 4)
-        if where == 1:
-          self.up(map, fighters, tp, stats)
-        elif where == 2:
-          self.down(map, fighters, tp, stats)
-        elif where == 3:
-          self.right(map, fighters, tp, stats)
-        elif where == 4:
-          self.left(map, fighters, tp, stats)
+        moves = 1
+        for a in range(0, 2):
+            x = random.randint(1, 1001)
+            if self.speed * 3 >= x:
+                moves += 1
+        for b in range(0, moves):
+            where = random.randint(1, 4)
+            if where == 1:
+                self.up(map, fighters, tp, stats)
+            elif where == 2:
+                self.down(map, fighters, tp, stats)
+            elif where == 3:
+                self.right(map, fighters, tp, stats)
+            elif where == 4:
+                self.left(map, fighters, tp, stats)
 
     def left(self, map, fighters, tp, stats):
         if not self.x - 1 < 0 and map.map[self.x - 1][self.y] == 0:
@@ -116,7 +118,7 @@ def simulate_game(map, fighters):
     fighters2 = fighters.copy()
     textPipe = []
     textPipeLen = 0
-    stats={}
+    stats = {}
     for fighter in fighters:
         stats[fighter.id] = {}
         stats[fighter.id]["kills"] = 0
@@ -196,10 +198,11 @@ def simulate_game(map, fighters):
             print(the_text)
             textPipe.append(the_text)
             for x in stats:
-              x = stats[x]
-              the_text2 = x["name"]+", KILLS: "+str(x["kills"])+", DAMAGE: "+str(x["damage"])
-              print(the_text2)
-              textPipe.append(the_text2)
+                x = stats[x]
+                the_text2 = x["name"] + ", KILLS: " + str(
+                    x["kills"]) + ", DAMAGE: " + str(x["damage"])
+                print(the_text2)
+                textPipe.append(the_text2)
 
             fighters[0].delete(map)
             fighters.remove(fighters[0])
@@ -227,11 +230,11 @@ def simulate_game(map, fighters):
 
 def main():
     map = Map(10, 5)
-    otto = Fighter("Otto", 93, 33, 93, 93, "O")
-    hans = Fighter("Hans", 94, 34, 94, 94, "H")
-    peter = Fighter("Peter", 95, 35, 95, 95, "P")
-    walter = Fighter("Walter", 96, 36, 96, 96, "W")
-    gerd = Fighter("Gerd", 97, 37, 97, 97, "G")
+    otto = Fighter("Otto", 33, 93, 93, 93, "O")
+    hans = Fighter("Hans", 34, 94, 94, 94, "H")
+    peter = Fighter("Peter", 35, 95, 95, 95, "P")
+    walter = Fighter("Walter", 36, 96, 96, 96, "W")
+    gerd = Fighter("Gerd", 37, 97, 97, 97, "G")
     # janu = Fighter("Janu", 200, 200, 1000, "Janu")
     simulate_game(map, [otto, hans, peter, walter, gerd])
 
