@@ -240,8 +240,8 @@ def example():
     peter = Fighter("Peter", 35, 95, 95, 95, "P")
     walter = Fighter("Walter", 36, 96, 96, 96, "W")
     gerd = Fighter("Gerd", 37, 97, 97, 97, "G")
-    janu = Fighter("Janu", 200, 200, 350,1000, "Janu")
-    simulate_game(map, [otto, hans, peter, walter, janu])
+    # janu = Fighter("Janu", 200, 200, 350,1000, "Janu")
+    simulate_game(map, [otto, hans, peter, walter])
 
 
 def main():
