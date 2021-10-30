@@ -103,6 +103,7 @@ def simulate_game(map, fighters):
         stats[fighter.id] = {}
         stats[fighter.id]["kills"] = 0
         stats[fighter.id]["damage"] = 0
+        stats[fighter.id]["name"] = fighter.name
         while True:
             x = random.randint(0, map.x - 1)
             y = random.randint(0, map.y - 1)
@@ -184,7 +185,11 @@ def simulate_game(map, fighters):
             text = font.render(the_text, True, GREEN)
             print(the_text)
             textPipe.append(the_text)
-            print(stats)
+            for x in stats:
+              x = stats[x]
+              the_text2 = x["name"]+", KILLS: "+str(x["kills"])+", DAMAGE: "+str(x["damage"])
+              print(the_text2)
+              textPipe.append(the_text2)
 
             fighters[0].delete(map)
             fighters.remove(fighters[0])
@@ -207,7 +212,7 @@ def simulate_game(map, fighters):
         screen.fill(WHITE)
         # --- Go ahead and update the screen with what we've drawn.
         # --- Limit to x frames per second
-        clock.tick(10)
+        clock.tick(500)
 
 
 def main():
