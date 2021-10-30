@@ -42,14 +42,17 @@ class Fighter:
         isCrit = random.randint(1,101)
         if isCrit <= round(self.crit/10,2):
           critFactor = 3
-        how_hard = critFactor*round(random.randint(min_power, max_power) / 10, 2)
+        how_hard = round(critFactor*random.randint(min_power, max_power) / 10, 2)
         victim.temp -= how_hard
         victim.temp = round(victim.temp, 2)
         if critFactor == 3:
           the_text1 = "KABOOM! A critical hit. "
         else:
           the_text1 = "BAM! "
-        the_text = the_text1 + self.name + " attacks " + victim.name + ". He loses " + str(how_hard) + " life."
+        the_text2 = ""
+        if victim.temp <=0:
+          the_text2 = "and KILLS "
+        the_text = the_text1 + self.name + " attacks " + the_text2 + victim.name + ". He loses " + str(how_hard) + " life."
         print(the_text)
         tp.append(the_text)
 
