@@ -225,7 +225,7 @@ def simulate_game(map, fighters):
         screen.fill(WHITE)
         # --- Go ahead and update the screen with what we've drawn.
         # --- Limit to x frames per second
-        clock.tick(1)
+        clock.tick(10)
 
 
 def main():
