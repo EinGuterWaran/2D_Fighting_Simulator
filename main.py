@@ -49,6 +49,7 @@ class Fighter:
         victim.temp = round(victim.temp, 2)
         stats[self.id]["damage"] += how_hard
         stats[self.id]["damage"] = round(stats[self.id]["damage"], 2)
+        stats[self.id]["hits"] += 1
         if critFactor == 3:
             the_text1 = "KABOOM! A critical hit. "
         else:
@@ -123,6 +124,7 @@ def simulate_game(map, fighters):
         stats[fighter.id] = {}
         stats[fighter.id]["kills"] = 0
         stats[fighter.id]["damage"] = 0
+        stats[fighter.id]["hits"] = 0
         stats[fighter.id]["name"] = fighter.name
         while True:
             x = random.randint(0, map.x - 1)
@@ -200,7 +202,7 @@ def simulate_game(map, fighters):
             for x in stats:
                 x = stats[x]
                 the_text2 = x["name"] + ", KILLS: " + str(
-                    x["kills"]) + ", DAMAGE: " + str(x["damage"])
+                    x["kills"]) + ", DAMAGE: " + str(x["damage"])+", HITS: "+str(x["hits"])
                 print(the_text2)
                 textPipe.append(the_text2)
 
@@ -225,18 +227,18 @@ def simulate_game(map, fighters):
         screen.fill(WHITE)
         # --- Go ahead and update the screen with what we've drawn.
         # --- Limit to x frames per second
-        clock.tick(10)
+        clock.tick(4)
 
 
 def main():
     map = Map(10, 5)
-    otto = Fighter("Otto", 33, 93, 93, 93, "O")
-    hans = Fighter("Hans", 34, 94, 94, 94, "H")
+    otto = Fighter("Otto", 33, 100, 1, 93, "O")
+    hans = Fighter("Hans", 34, 50, 1000, 94, "H")
     peter = Fighter("Peter", 35, 95, 95, 95, "P")
     walter = Fighter("Walter", 36, 96, 96, 96, "W")
     gerd = Fighter("Gerd", 37, 97, 97, 97, "G")
     # janu = Fighter("Janu", 200, 200, 1000, "Janu")
-    simulate_game(map, [otto, hans, peter, walter, gerd])
+    simulate_game(map, [otto, hans])
 
 
 if __name__ == "__main__":
