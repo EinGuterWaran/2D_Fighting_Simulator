@@ -38,13 +38,20 @@ class Fighter:
                 victim = fighter
         min_power = round(self.strength * 0.7, 0)
         max_power = round(self.strength * 1.3, 0)
-        how_hard = round(random.randint(min_power, max_power) / 10, 2)
+        critFactor = 1
+        isCrit = random.randint(1,101)
+        if isCrit <= round(self.crit/10,2):
+          critFactor = 3
+        how_hard = critFactor*round(random.randint(min_power, max_power) / 10, 2)
         victim.temp -= how_hard
         victim.temp = round(victim.temp, 2)
-        print("KABOOM! " + self.name + " attacks " + victim.name +
-              ". He loses " + str(how_hard) + " life.")
-        tp.append("KABOOM! " + self.name + " attacks " + victim.name +
-                  ". He loses " + str(how_hard) + " life.")
+        if critFactor == 3:
+          the_text1 = "KABOOM! A critical hit. "
+        else:
+          the_text1 = "BAM! "
+        the_text = the_text1 + self.name + " attacks " + victim.name + ". He loses " + str(how_hard) + " life."
+        print(the_text)
+        tp.append(the_text)
 
     def left(self, map, fighters, tp):
         if not self.x - 1 < 0 and map.map[self.x - 1][self.y] == 0:
