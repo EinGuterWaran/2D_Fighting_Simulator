@@ -13,10 +13,11 @@ class Map:
 
 
 class Fighter:
-    def __init__(self, name, strength, life, crit, id):
+    def __init__(self, name, strength, life, speed, crit, id):
         self.name = name
         self.strength = strength
         self.life = life
+        self.speed = speed
         self.crit = crit
         self.temp = life
         self.id = id
@@ -58,6 +59,23 @@ class Fighter:
         the_text = the_text1 + self.name + " attacks " + the_text2 + victim.name + ". He loses " + str(how_hard) + " life."
         print(the_text)
         tp.append(the_text)
+
+    def move(self, map, fighters, tp, stats):
+      moves = 1
+      for a in range(0,2):
+        x = random.randint(1,1001)
+        if self.speed*3 >= x:
+          moves +=1
+      for b in range(0,moves):
+        where = random.randint(1, 4)
+        if where == 1:
+          self.up(map, fighters, tp, stats)
+        elif where == 2:
+          self.down(map, fighters, tp, stats)
+        elif where == 3:
+          self.right(map, fighters, tp, stats)
+        elif where == 4:
+          self.left(map, fighters, tp, stats)
 
     def left(self, map, fighters, tp, stats):
         if not self.x - 1 < 0 and map.map[self.x - 1][self.y] == 0:
@@ -151,15 +169,7 @@ def simulate_game(map, fighters):
             screen.blit(text, d_p[1])
 
         for fighter in fighters:
-            where = random.randint(1, 4)
-            if where == 1:
-                fighter.up(map, fighters, textPipe, stats)
-            elif where == 2:
-                fighter.down(map, fighters, textPipe, stats)
-            elif where == 3:
-                fighter.right(map, fighters, textPipe, stats)
-            elif where == 4:
-                fighter.left(map, fighters, textPipe, stats)
+            fighter.move(map, fighters, textPipe, stats)
         # --- Drawing code should go here
         for x in range(0, map.x):
             for y in range(0, map.y):
@@ -212,16 +222,16 @@ def simulate_game(map, fighters):
         screen.fill(WHITE)
         # --- Go ahead and update the screen with what we've drawn.
         # --- Limit to x frames per second
-        clock.tick(500)
+        clock.tick(1)
 
 
 def main():
     map = Map(10, 5)
-    otto = Fighter("Otto", 93, 33, 93, "O")
-    hans = Fighter("Hans", 94, 34, 94, "H")
-    peter = Fighter("Peter", 95, 35, 95, "P")
-    walter = Fighter("Walter", 96, 36, 96, "W")
-    gerd = Fighter("Gerd", 97, 37, 97, "G")
+    otto = Fighter("Otto", 93, 33, 93, 93, "O")
+    hans = Fighter("Hans", 94, 34, 94, 94, "H")
+    peter = Fighter("Peter", 95, 35, 95, 95, "P")
+    walter = Fighter("Walter", 96, 36, 96, 96, "W")
+    gerd = Fighter("Gerd", 97, 37, 97, 97, "G")
     # janu = Fighter("Janu", 200, 200, 1000, "Janu")
     simulate_game(map, [otto, hans, peter, walter, gerd])
 
