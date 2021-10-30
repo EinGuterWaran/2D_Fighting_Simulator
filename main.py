@@ -116,29 +116,17 @@ def simulate_game(map, fighters):
                 done = True  # Flag that we are done so we exit this loop
 
         # --- Game logic should go here
-        # mode = [textPipeLen, textPipeLen]
-        mode = [15, len(textPipe)-15]
-        if len(textPipe) > mode[0] and mode[0] > 0:
-            for x in range(0, mode[1]):
-                textPipe.pop(0)
-        textCounter = 0
-        textPipeLen = len(textPipe)
-        for text in textPipe:
-            font = pygame.font.SysFont('Calibri', 10, True, False)
-            text2 = font.render(text, True, BLACK)
-            screen.blit(text2, [40, map.y * 40 + 40 + textCounter * 15])
-            textCounter += 1
         for fighter in fighters:
             if fighter.temp <= 0:
-              deadText = fighter.name + " is dead."
-              textPipe.append(deadText)
-              death_prints.append([
-                   deadText ,
+                deadText = fighter.name + " is dead."
+                textPipe.append(deadText)
+                death_prints.append([
+                    deadText,
                     [map.x * 40 + 10, 40 * (amount_fig - len(fighters))]
                 ])
-              print(deadText)
-              fighter.delete(map)
-              fighters.remove(fighter)
+                print(deadText)
+                fighter.delete(map)
+                fighters.remove(fighter)
         for d_p in death_prints:
             font = pygame.font.SysFont('Calibri', 15, True, False)
             text = font.render(d_p[0], True, RED)
@@ -171,13 +159,30 @@ def simulate_game(map, fighters):
                 text,
                 [map.x * 40 + 10, 40 * (amount_fig) + 40 * fighterCounter])
             fighterCounter += 1
+
         if len(fighters) == 1:
             done = True
-            text = font.render(fighters[0].name + " won!!", True, GREEN)
-            print(fighters[0].name + " won!!")
+            font = pygame.font.SysFont('Calibri', 15, True, False)
+            the_text = fighters[0].name + " won!!"
+            text = font.render(the_text, True, GREEN)
+            print(the_text)
+            textPipe.append(the_text)
+
             fighters[0].delete(map)
             fighters.remove(fighters[0])
             screen.blit(text, [map.x * 40 + 10, 40 * (amount_fig - 1)])
+        # mode = [textPipeLen, textPipeLen]
+        mode = [15, len(textPipe) - 15]
+        if len(textPipe) > mode[0] and mode[0] > 0:
+            for x in range(0, mode[1]):
+                textPipe.pop(0)
+        textCounter = 0
+        textPipeLen = len(textPipe)
+        for text in textPipe:
+            font = pygame.font.SysFont('Calibri', 10, True, False)
+            text2 = font.render(text, True, BLACK)
+            screen.blit(text2, [40, map.y * 40 + 40 + textCounter * 15])
+            textCounter += 1
         pygame.display.update()
         # First, clear the screen to white. Don't put other drawing commands
         # above this, or they will be erased with this command.
