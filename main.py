@@ -246,58 +246,66 @@ def example():
 
 def main():
     while True:
-      mapx = input("Map width (10 or higher): ")
-      if str(mapx).isnumeric() and int(mapx) >=10:
+      mode = input("Enter e if you want to see an example game. If you want to set up your own game enter o! ")
+      if mode=="e" or mode=="o":
         break
-      print("Please enter a number (10 or higher)!")
-    while True:
-      mapy = input("Map height (5 or higher): ")
-      if str(mapy).isnumeric() and int(mapy) >=5:
-        break
-      print("Please enter a number (5 or higher)!")
-    mapx = int(mapx)
-    mapy = int(mapy)
-    map = Map(mapx,mapy)
-    player_index = 0
-    players=[]
-    while True:
+      print("That's not e or o!")
+    if mode=="e":
+      example()
+    elif mode=="o":
       while True:
-        name = input("Name of player #"+str(player_index+1)+": ")
-        if type(name) is str:
+        mapx = input("Map width (10 or higher): ")
+        if str(mapx).isnumeric() and int(mapx) >=10:
           break
+        print("Please enter a number (10 or higher)!")
       while True:
-        life = input("Life of "+name+": ")
-        if life.isnumeric():
+        mapy = input("Map height (5 or higher): ")
+        if str(mapy).isnumeric() and int(mapy) >=5:
           break
+        print("Please enter a number (5 or higher)!")
+      mapx = int(mapx)
+      mapy = int(mapy)
+      map = Map(mapx,mapy)
+      player_index = 0
+      players=[]
       while True:
-        strength = input("Strength of "+name+": ")
-        if strength.isnumeric():
+        while True:
+          name = input("Name of player #"+str(player_index+1)+": ")
+          if type(name) is str:
+            break
+        while True:
+          life = input("Life of "+name+": ")
+          if life.isnumeric():
+            break
+        while True:
+          strength = input("Strength of "+name+": ")
+          if strength.isnumeric():
+            break
+        while True:
+          speed = input("Speed of "+name+": ")
+          if speed.isnumeric():
+            break
+        while True:
+          crit = input("Critical hit of "+name+": ")
+          if crit.isnumeric():
+            break
+        while True:
+          id = input("ID of "+name+": ")
+          if type(id) is str:
+            break
+        players.append([name,int(life),int(strength),int(speed),int(crit),id])
+        while True:
+          end = input("Enter y if you want to add another player. If not, enter n! ")
+          if end=="y" or end=="n":
+            break
+          print("That's not y or n!")
+        if end == "n":
           break
-      while True:
-        speed = input("Speed of "+name+": ")
-        if speed.isnumeric():
-          break
-      while True:
-        crit = input("Critical hit of "+name+": ")
-        if crit.isnumeric():
-          break
-      while True:
-        id = input("ID of "+name+": ")
-        if type(id) is str:
-          break
-      players.append([name,int(life),int(strength),int(speed),int(crit),id])
-      while True:
-        end = input("Enter y if you want to add another player. If not, enter n! ")
-        if end=="y" or end=="n":
-          break
-        print("That's not y or n!")
-      if end == "n":
-        break
-      player_index += 1
-    players2=[]
-    for player in players:
-        players2.append(Fighter(player[0], player[1], player[2], player[3],player[4], player[5]))
-    simulate_game(map, players2)
+        player_index += 1
+      players2=[]
+      for player in players:
+          players2.append(Fighter(player[0], player[1], player[2], player[3],player[4], player[5]))
+      simulate_game(map, players2)
 
 if __name__ == "__main__":
     # example()
