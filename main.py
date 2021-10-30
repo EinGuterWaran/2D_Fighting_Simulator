@@ -116,8 +116,10 @@ def simulate_game(map, fighters):
                 done = True  # Flag that we are done so we exit this loop
 
         # --- Game logic should go here
-        if len(textPipe) > textPipeLen and textPipeLen > 0:
-            for x in range(0, textPipeLen):
+        # mode = [textPipeLen, textPipeLen]
+        mode = [15, len(textPipe)-15]
+        if len(textPipe) > mode[0] and mode[0] > 0:
+            for x in range(0, mode[1]):
                 textPipe.pop(0)
         textCounter = 0
         textPipeLen = len(textPipe)
@@ -128,13 +130,15 @@ def simulate_game(map, fighters):
             textCounter += 1
         for fighter in fighters:
             if fighter.temp <= 0:
-                death_prints.append([
-                    fighter.name + " is dead.",
+              deadText = fighter.name + " is dead."
+              textPipe.append(deadText)
+              death_prints.append([
+                   deadText ,
                     [map.x * 40 + 10, 40 * (amount_fig - len(fighters))]
                 ])
-                print(fighter.name + " is dead.")
-                fighter.delete(map)
-                fighters.remove(fighter)
+              print(deadText)
+              fighter.delete(map)
+              fighters.remove(fighter)
         for d_p in death_prints:
             font = pygame.font.SysFont('Calibri', 15, True, False)
             text = font.render(d_p[0], True, RED)
