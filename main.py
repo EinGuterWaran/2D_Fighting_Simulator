@@ -159,8 +159,8 @@ def simulate_game(map, fighters):
                 done = True  # Flag that we are done so we exit this loop
 
         # --- Game logic should go here
-        for fighter in fighters:
-            if fighter.temp <= 0:
+        for fighter in fighters2:
+            if fighter.temp <= 0 and fighter in fighters:
                 deadText = fighter.name + " is dead."
                 textPipe.append(deadText)
                 death_prints.append([
@@ -230,28 +230,36 @@ def simulate_game(map, fighters):
         screen.fill(WHITE)
         # --- Go ahead and update the screen with what we've drawn.
         # --- Limit to x frames per second
-        clock.tick(10)
+        clock.tick(100)
 
 
-def example():
-    map = Map(10, 5)
-    otto = Fighter("Otto", 33, 100, 1, 93, "O")
-    hans = Fighter("Hans", 34, 50, 350, 94, "H")
-    peter = Fighter("Peter", 35, 95, 95, 95, "P")
-    walter = Fighter("Walter", 36, 96, 96, 96, "W")
-    gerd = Fighter("Gerd", 37, 97, 97, 97, "G")
-    # janu = Fighter("Janu", 200, 200, 350,1000, "Janu")
-    simulate_game(map, [otto, hans, peter, walter])
+def example(number):
+    map = Map(5, 5)
+    if number==1:
+      otto = Fighter("Otto", 33, 100, 1, 93, "O")
+      hans = Fighter("Hans", 34, 50, 350, 94, "H")
+      peter = Fighter("Peter", 35, 95, 95, 95, "P")
+      walter = Fighter("Walter", 36, 96, 96, 96, "W")
+      # gerd = Fighter("Gerd", 37, 97, 97, 97, "G")
+      # janu = Fighter("Janu", 200, 200, 350,1000, "Janu")
+      simulate_game(map, [otto, hans, peter, walter])
+    elif number==2:
+      janu = Fighter("Janu", 40, 20, 350, 100, "J")
+      damian = Fighter("Damian", 40, 60, 0, 100, "D")
+      simulate_game(map, [janu, damian])
 
 
 def main():
     while True:
-      mode = input("Enter e if you want to see an example game. If you want to set up your own game enter o! ")
-      if mode=="e" or mode=="o":
+      print("Enter e1 if you want to see example game #1 and e2 for example game #2. If you want to set up your own game enter o!")
+      mode = input("")
+      if mode=="e1" or mode=="e2" or mode=="o":
         break
       print("That's not e or o!")
-    if mode=="e":
-      example()
+    if mode=="e1":
+      example(1)
+    elif mode=="e2":
+      example(2)
     elif mode=="o":
       while True:
         mapx = input("Map width (10 or higher): ")
@@ -309,4 +317,6 @@ def main():
 
 if __name__ == "__main__":
     # example()
+    while True:
+      example(2)
     main()
