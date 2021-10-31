@@ -152,14 +152,21 @@ def simulate_game(map, fighters):
     done = False
     # Used to manage how fast the screen updates
     clock = pygame.time.Clock()
+    counter = 1
     # -------- Main Program Loop -----------
     while not done:
+        # textPipe.append(str(counter))
+        print(counter)
+        counter+=1
         # --- Main event loop
         for event in pygame.event.get():  # User did something
             if event.type == pygame.QUIT:  # If user clicked close
                 done = True  # Flag that we are done so we exit this loop
 
         # --- Game logic should go here
+        for fighter in fighters:
+            fighter.move(map, fighters, textPipe, stats)
+
         died = []
         for fighter in fighters2:
             if fighter.temp <= 0 and fighter in fighters:
@@ -178,8 +185,6 @@ def simulate_game(map, fighters):
             text = font.render(d_p[0], True, RED)
             screen.blit(text, d_p[1])
 
-        for fighter in fighters:
-            fighter.move(map, fighters, textPipe, stats)
         # --- Drawing code should go here
         for x in range(0, map.x):
             for y in range(0, map.y):
