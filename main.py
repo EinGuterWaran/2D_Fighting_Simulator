@@ -116,7 +116,7 @@ class Fighter:
             self.attack(fighters, self.x, self.y + 1, tp, stats)
 
 
-def simulate_game(map, fighters):
+def simulate_game(map, fighters, frames_per_second):
     amount_fig = len(fighters)
     death_prints = []
     fighters2 = fighters.copy()
@@ -282,23 +282,23 @@ def simulate_game(map, fighters):
         screen.fill(WHITE)
         # --- Go ahead and update the screen with what we've drawn.
         # --- Limit to x frames per second
-        clock.tick(10)
+        clock.tick(frames_per_second)
 
 
 def example(number):
-    map = Map(8, 5)
+    map = Map(10, 5)
     if number == 1:
         otto = Fighter("Otto", 33, 100, 1, 93, "O")
         hans = Fighter("Hans", 34, 50, 350, 94, "H")
         peter = Fighter("Peter", 35, 95, 95, 95, "P")
         walter = Fighter("Walter", 36, 96, 96, 96, "W")
-        # gerd = Fighter("Gerd", 37, 97, 97, 97, "G")
-        # janu = Fighter("Janu", 200, 200, 350,1000, "Janu")
-        simulate_game(map, [otto, hans, peter, walter])
+        gerd = Fighter("Gerd", 37, 97, 97, 97, "G")
+        janu = Fighter("Janu", 200, 200, 350,1000, "Janu")
+        simulate_game(map, [otto, hans, peter, walter, gerd, janu], 10)
     elif number == 2:
         janu = Fighter("Janu", 50, 20, 350, 100, "J")
         damian = Fighter("Damian", 50, 60, 0, 100, "D")
-        simulate_game(map, [janu, damian])
+        simulate_game(map, [janu, damian], 10)
 
 
 def main():
@@ -376,7 +376,7 @@ def main():
             players2.append(
                 Fighter(player[0], player[1], player[2], player[3], player[4],
                         player[5]))
-        simulate_game(map, players2)
+        simulate_game(map, players2, 10)
 
 
 if __name__ == "__main__":
