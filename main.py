@@ -241,9 +241,12 @@ def simulate_game(map, fighters, frames_per_second):
             done = True
             font = pygame.font.SysFont('Calibri', 15, True, False)
             if len(winner) == 1:
+                stats[winner[0].id]["won"] = True
                 the_text = winner[
                     0].name + " was also knocked out but is the first to come back to his senses and wins!!"
             else:
+                for winner_fighter in winner:
+                    stats[winner_fighter.id]["won"] = True
                 if len(winner) == 2:
                     howMany = "both"
                 else:
