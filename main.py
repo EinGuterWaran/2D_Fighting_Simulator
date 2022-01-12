@@ -121,7 +121,6 @@ def simulate_game(map, fighters, frames_per_second):
     death_prints = []
     fighters2 = fighters.copy()
     textPipe = []
-    textPipeLen = 0
     stats = {}
     for fighter in fighters:
         stats[fighter.id] = {}
@@ -130,6 +129,7 @@ def simulate_game(map, fighters, frames_per_second):
         stats[fighter.id]["hits"] = 0
         stats[fighter.id]["crit"] = 0
         stats[fighter.id]["name"] = fighter.name
+        stats[fighter.id]["won"] = False
         while True:
             x = random.randint(0, map.x - 1)
             y = random.randint(0, map.y - 1)
@@ -206,6 +206,7 @@ def simulate_game(map, fighters, frames_per_second):
         if len(fighters) == 1:
             done = True
             font = pygame.font.SysFont('Calibri', 15, True, False)
+            stats[fighters[0].id]["won"] = True
             the_text = fighters[0].name + " won!!"
             text = font.render(the_text, True, GREEN)
             print(the_text)
@@ -264,13 +265,11 @@ def simulate_game(map, fighters, frames_per_second):
                 print(the_text2)
                 textPipe.append(the_text2)
 
-        # mode = [textPipeLen, textPipeLen]
         mode = [15, len(textPipe) - 15]
         if len(textPipe) > mode[0] and mode[0] > 0:
             for x in range(0, mode[1]):
                 textPipe.pop(0)
         textCounter = 0
-        # textPipeLen = len(textPipe)
         for text in textPipe:
             font = pygame.font.SysFont('Calibri', 10, True, False)
             text2 = font.render(text, True, BLACK)
@@ -283,7 +282,7 @@ def simulate_game(map, fighters, frames_per_second):
         # --- Go ahead and update the screen with what we've drawn.
         # --- Limit to x frames per second
         clock.tick(frames_per_second)
-
+    return stats
 
 def example(number):
     map = Map(10, 5)
@@ -380,5 +379,9 @@ def main():
 
 
 if __name__ == "__main__":
-    # example()
-    main()
+    # main()
+    map = Map(10, 5)
+    janu = Fighter("Janu", 50, 20, 350, 100, "J")
+    damian = Fighter("Damian", 50, 60, 0, 100, "D")
+    ergebnis = simulate_game(map, [janu, damian], 1000)
+    print(ergebnis)
